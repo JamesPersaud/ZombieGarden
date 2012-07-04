@@ -1,0 +1,153 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Multiplayer Zombie Garden Adventure - Ludum Dare 20 game by goffmog</title>
+        <link rel="stylesheet" href="./css/humanity/jquery-ui-1.8.11.custom.css">
+        <script language="javascript" src="http://ec2-50-17-110-166.compute-1.amazonaws.com:666/socket.io/socket.io.js"></script>
+        <script language="javascript" src="./js/jquery-1.5.1.min.js"></script>
+        <script language="javascript" src="./js/jquery-ui-1.8.11.custom.min.js"></script>
+
+        <script language="javascript" src="js/json2.js"></script>
+        <script language="javascript" src="js/tileworld.js"></script>
+        <script language="javascript" src="js/nodeclient.js"></script>
+        <script language="javascript" src="js/gameclient.js"></script>
+
+        <script language="javascript">
+            function loadscript(){
+                if(!tMCow.client.connect()){
+                    alert("Oh noes :( The server is down. Send complaints to goffmog");
+                    return 0;
+                }else{
+                    document.getElementById('canvy').style.visibility='visible';
+                    document.getElementById('eventbox').style.visibility='visible';
+                    document.getElementById('speakbutton').style.visibility='visible';
+                    document.getElementById('speakbox').style.visibility='visible';
+                    document.getElementById('scorebits').style.visibility='visible';
+                    tMCow.client.playerSetName(document.getElementById('name').value);
+                    return 1;
+                }
+            }
+        </script>
+    </head>
+    <body onload="//loadscript();">
+
+    <script language="javascript">
+        $(function() {$( "#dialog-form" ).dialog({
+                autoOpen: true,
+                height: 500,
+                width: 800,
+                modal: true,
+                buttons: {
+                    "Play Now": function() {
+                        if(loadscript() == 1)
+                            $( this ).dialog( "close" );
+                    }
+                },
+                close: function() {
+                }
+            });
+        });
+
+        $(function() {
+                $( "button, input:submit" ).button();
+        });
+
+    </script>
+
+    <canvas style="border:1px solid black;position:absolute;left:200px;top:100px;visibility:hidden;" id="canvy"></canvas>
+    <div id="titlebar" style="position:absolute;top:0px;left:0px;height:100px;width:740px;background-image:url('./img/title.png');">
+        
+    </div>
+    <div id="scores">
+
+    </div>
+    <div style="height:100px;width:640px;border:1px solid black;overflow:scroll;
+        position:absolute;left:200px;top:460px;visibility:hidden;" id="eventbox">
+
+    </div>
+
+    <form>
+        <input style="width:528px;position:absolute;left:200px;top:566px;height:26px;visibility:hidden;overflow:scroll;"
+               type="text" id="speakbox"/>
+        <input style="width:100px;position:absolute;padding-top:2px;padding-bottom:2px;
+               left:740px;top:566px;visibility:hidden;" onclick="tMCow.client.playerShout();return false;"
+               type="submit" id="speakbutton" value="Send"/>
+    </form>
+
+    <div style="visibility:hidden;" id="scorebits">
+
+        <div style="position:absolute;left:4px;top:100px;width:188px;height:496px;border:1px solid black;">
+            <div style="position:absolute;left:8px;top:8px;">
+                <span style="font-weight:bold;">Scores</span>
+            </div>
+            <div style="position:absolute;left:8px;top:32px;">
+                <span style="font-weight:bold;color:red;">RED Team&nbsp;&nbsp;:</span>
+            </div>
+            <div style="position:absolute;left:8px;top:52px;">
+                <span style="font-weight:bold;color:blue;">BLUE Team&nbsp;: </span>
+            </div>
+
+            <div style="position:absolute;left:130px;top:32px;">
+                <span id="redscore" style="font-weight:bold;color:red;">0</span>
+            </div>
+            <div style="position:absolute;left:130px;top:52px;">
+                <span id="bluescore" style="font-weight:bold;color:blue;">0</span>
+            </div>
+
+            <div style="position:absolute;left:8px;top:132px;">
+                <span style="font-weight:bold;color:red;">Red Team Players</span>
+            </div>
+
+            <div style="position:absolute;left:4px;top:152px;width:180px;height:150px;overflow:scroll;" id="redplayers">
+            </div>
+
+            <div style="position:absolute;left:8px;top:300px;">
+                <span style="font-weight:bold;color:blue;">Blue Team Players</span>
+            </div>
+
+            <div style="position:absolute;left:4px;top:320px;width:180px;height:150px;overflow:scroll;" id="blueplayers">
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="playernamelabels">
+        <div id="myNameLabel" style="position:absolute;left:200px;top:100px;color:#a52a2a;font-weight:bold;">
+            
+        </div>
+    </div>
+
+
+    <div id="dialog-form" title="Roll up! Roll up! and bring all your friends.">
+        <form>
+        <p>
+            Fabulous gigantic jewels magically appear in the garden of wonders. Unfortunately, so do
+            <span style="font-weight:bold;color:green;">ZOMBIES</span>
+        </p>
+        <p>
+            Navigate the garden maze with <b>W,A,S,D</b> or the <b>ARROW KEYS</b><br/>
+            Use the <b>SPACE</b> bar to fire your gun, but beware, it takes a while to reload. And you won't be able to use it when carrying a heavy jewel.<br/><br/>
+            Joining the game will assign you to either the
+            <span style="font-weight:bold;color:red;">RED TEAM</span>
+            or the
+            <span style="font-weight:bold;color:blue;">BLUE TEAM</span>
+             - try to capture the most treasure for your team.<br/>
+        </p>
+        <p>
+            And remember, it's suicide to go alone - take backup!
+        </p>
+        <fieldset>
+            <label for="name">What is your name? (will appear to other players)</label>
+            <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+        </fieldset>
+        </form>
+    </div>
+
+
+    </body>
+</html>
+ 
